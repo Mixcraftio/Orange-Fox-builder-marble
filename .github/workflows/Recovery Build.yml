@@ -18,7 +18,7 @@ on:
       DEVICE_TREE_URL:
         description: 'Device tree repo url'
         required: true
-        default: 'https://github.com/nebrassy/device_xiaomi_marble-TWRP'
+        default: 'https://github.com/mixcraftio/device_xiaomi_marble'
       DEVICE_TREE_BRANCH:
         description: "Device tree repo's branch"
         required: true
