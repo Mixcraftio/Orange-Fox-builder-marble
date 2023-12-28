@@ -31,6 +31,10 @@ on:
         description: "Common device tree repo url"
         required: false
         default: ''
+      COMMON_TREE_BRANCH:
+        description: "Device tree repo's branch"
+        required: false
+        default: ''
       COMMON_PATH:
         description: "Common device tree path"
         required: false
@@ -89,7 +93,7 @@ jobs:
     - name: Clone device tree
       run: |
         cd ${{ steps.pwd.outputs.workspace-folder }}/fox_${{ github.event.inputs.MANIFEST_BRANCH }}
-        git clone ${{ github.event.inputs.DEVICE_TREE_URL }} -b ${{ github.event.inputs.DEVICE_TREE_BRANCH }} ./${{ github.event.inputs.DEVICE_PATH }}
+        git clone ${{ github.event.inputs.DEVICE_TREE_URL }} -b ${{ github.event.inputs.COMMON_TREE_BRANCH }} ./${{ github.event.inputs.DEVICE_PATH }}
       working-directory: ${{ steps.pwd.outputs.workspace-folder }}
 
     - name: Clone common tree
