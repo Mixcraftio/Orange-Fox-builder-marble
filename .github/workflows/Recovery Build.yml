@@ -18,7 +18,7 @@ on:
       DEVICE_TREE_URL:
         description: 'Device tree repo url'
         required: true
-        default: 'https://github.com/mixcraftio/device_xiaomi_marble'
+        default: 'https://github.com/nebrassy/device_xiaomi_marble-TWRP'
       DEVICE_TREE_BRANCH:
         description: "Device tree repo's branch"
         required: true
@@ -30,15 +30,15 @@ on:
       COMMON_TREE_URL:
         description: "Common device tree repo url"
         required: false
-        default: ''
+        default: 'https://github.com/nebrassy/device_xiaomi_sm84xx-common-TWRP'
       COMMON_TREE_BRANCH:
         description: "Device tree repo's branch"
         required: false
-        default: ''
+        default: 'android-12.1'
       COMMON_PATH:
         description: "Common device tree path"
         required: false
-        default: ''
+        default: 'device/xiaomi/sm84xx-common'
       BUILD_TARGET:
         description: 'Build Target'
         required: true
@@ -102,7 +102,7 @@ jobs:
         && github.event.inputs.COMMON_PATH != null
       run: |
         cd ${{ steps.pwd.outputs.workspace-folder }}/fox_${{ github.event.inputs.MANIFEST_BRANCH }}
-        git clone ${{ github.event.inputs.COMMON_TREE_URL }} -b ${{ github.event.inputs.COMMON_TREE_BRANCH }} ./${{ github.event.inputs.COMMON_PATH }}-common
+        git clone ${{ github.event.inputs.COMMON_TREE_URL }} -b ${{ github.event.inputs.COMMON_TREE_BRANCH }} ./${{ github.event.inputs.COMMON_PATH }}
       working-directory: ${{ steps.pwd.outputs.workspace-folder }}
 
     - name: Set Swap Space
