@@ -3,44 +3,47 @@ name: Recovery Build
 on:
   workflow_dispatch:
     inputs:
-      SYNC_URL:
-        description: 'SYNC_URL'
-        required: true
-        default: 'https://gitlab.com/OrangeFox/sync.git'
       MANIFEST_BRANCH:
-        description: 'MANIFEST_BRANCH'
+        description: 'OrangeFox Branch'
         required: true
-        default: '11.0'
+        default: '12.1'
+        type: choice
+        options:
+        - 12.1
+        - 11.0
+      DEVICE_NAME:
+        description: 'Device codename'
+        required: true
+        default: 'marble'
       DEVICE_TREE_URL:
-        description: 'DEVICE_TREE_URL'
+        description: 'Device tree repo url'
         required: true
-        default: 'https://github.com/OrangeFoxRecovery/device_xiaomi_garden'
+        default: 'https://github.com/nebrassy/device_xiaomi_marble-TWRP'
       DEVICE_TREE_BRANCH:
-        description: 'DEVICE_TREE_BRANCH'
+        description: "Device tree repo's branch"
         required: true
-        default: 'fox_11.0_Q'
+        default: 'android-12.1'
       DEVICE_PATH:
         description: 'DEVICE_PATH'
         required: true
-        default: 'device/xiaomi/garden'
+        default: 'device/xiaomi/marble'
       COMMON_TREE_URL:
-        description: 'COMMON_TREE_URL (if no common tree, leave blank)'
+        description: "Common device tree repo url"
         required: false
+        default: ''
       COMMON_PATH:
-        description: 'COMMON_PATH (if no common tree, leave blank)'
+        description: "Common device tree path"
         required: false
-      DEVICE_NAME:
-        description: 'DEVICE_NAME'
-        required: true
-        default: 'garden'
-      MAKEFILE_NAME:
-        description: 'MAKEFILE_NAME'
-        required: true
-        default: 'twrp_garden'
+        default: ''
       BUILD_TARGET:
-        description: 'BUILD_TARGET'
+        description: 'Build Target'
         required: true
         default: 'recovery'
+        type: choice
+        options:
+        - boot
+        - recovery
+        - vendorboot
 
 jobs:
   build:
@@ -78,7 +81,7 @@ jobs:
     - name: Sync OrangeFox sources and minimal manifest
       run: |
         cd ${{ steps.pwd.outputs.workspace-folder }}
-        git clone ${{ github.event.inputs.SYNC_URL }}
+        git clone https://gitlab.com/OrangeFox/sync.git
         cd sync
         ./orangefox_sync.sh --branch ${{ github.event.inputs.MANIFEST_BRANCH }} --path ${{ steps.pwd.outputs.workspace-folder }}/fox_${{ github.event.inputs.MANIFEST_BRANCH }}
       working-directory: ${{ steps.pwd.outputs.workspace-folder }}
@@ -110,7 +113,7 @@ jobs:
         source build/envsetup.sh
         export ALLOW_MISSING_DEPENDENCIES=true
         set -e
-        lunch ${{ github.event.inputs.MAKEFILE_NAME }}-eng && make clean && mka adbd ${{ github.event.inputs.BUILD_TARGET }}image -j$(nproc --all)
+        lunch twrp_${{ github.event.inputs.DEVICE_NAME }}-eng && make clean && mka adbd ${{ github.event.inputs.BUILD_TARGET }}image -j$(nproc --all)
       working-directory: ${{ steps.pwd.outputs.workspace-folder }}
       continue-on-error: true
 
