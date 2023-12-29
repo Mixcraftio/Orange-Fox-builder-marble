@@ -30,7 +30,7 @@ on:
       COMMON_TREE_URL:
         description: "Common device tree repo url"
         required: false
-        default: 'https://github.com/nebrassy/device_xiaomi_sm84xx-common-TWRP'
+        default: 'https://github.com/mixcraftio/device_xiaomi_sm84xx-common-OFOX'
       COMMON_TREE_BRANCH:
         description: "Device tree repo's branch"
         required: false
